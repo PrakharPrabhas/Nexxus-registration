@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NEXXUS Operations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/design-system.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <div id="login" class="login-screen">
+      <div class="card login-box">
+        <div class="brand" style="justify-content: center; margin-bottom: 20px">
+          <span class="brand-mark">NX</span><span>NEXXUS</span>
+        </div>
+        <h1>Operations</h1>
+        <p>Private administration console for Nexxathon.</p>
+        <form id="login-form" class="login-form">
+          <div class="field">
+            <label>Admin password</label
+            ><input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <button class="btn primary full">Sign in</button>
+        </form>
+        <div
+          id="login-error"
+          class="danger"
+          style="font-size: 12px; text-align: center; margin-top: 12px"
+        ></div>
+      </div>
+    </div>
+    <div id="app" class="admin-layout" style="display: none">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">NX</span
+          ><span class="brand-text">NEXXUS</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#dashboard" data-section="dashboard" class="active"
+            ><span>⌂</span><span class="nav-label">Overview</span></a
+          ><a href="#participants" data-section="participants"
+            ><span>◉</span><span class="nav-label">Participants</span></a
+          ><a href="#teams" data-section="teams"
+            ><span>◇</span><span class="nav-label">Teams</span></a
+          ><a href="#problems" data-section="problems"
+            ><span>◆</span><span class="nav-label">Challenges</span></a
+          ><a href="#updates" data-section="updates"
+            ><span>!</span><span class="nav-label">Updates</span></a
+          ><a href="#support" data-section="support"
+            ><span>?</span><span class="nav-label">Support</span></a
+          >
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="btn full" id="logout">Sign out</button>
+        </div>
+      </aside>
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <div class="eyebrow">Nexxathon operations</div>
+            <h1 id="page-title">Overview</h1>
+            <p class="subtitle">
+              One place to manage people, teams, challenges and event
+              communication.
+            </p>
+          </div>
+          <div class="actions">
+            <a class="btn" href="index.html">View portal</a
+            ><button class="btn primary" id="refresh">Refresh</button>
+          </div>
+        </div>
+        <section id="section-dashboard" class="admin-section active">
+          <div class="stats">
+            <div class="card stat">
+              <div class="stat-label">Participants</div>
+              <div id="kpi-participants" class="stat-value">—</div>
+              <div class="kpi-note">Registered people</div>
+            </div>
+            <div class="card stat">
+              <div class="stat-label">Teams</div>
+              <div id="kpi-teams" class="stat-value">—</div>
+              <div class="kpi-note">Created teams</div>
+            </div>
+            <div class="card stat">
+              <div class="stat-label">Pending</div>
+              <div id="kpi-pending" class="stat-value">—</div>
+              <div class="kpi-note">Need attention</div>
+            </div>
+            <div class="card stat">
+              <div class="stat-label">Challenges</div>
+              <div id="kpi-problems" class="stat-value">—</div>
+              <div class="kpi-note">Published</div>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card panel">
+              <div class="panel-head">
+                <strong>Registration health</strong
+                ><span id="health" class="badge">Checking</span>
+              </div>
+              <div class="panel-body">
+                <div class="notice">
+                  Use the Participants and Teams views for operations.
+                  Challenges are managed separately so track categories never
+                  become accidental registration commitments.
+                </div>
+              </div>
+            </div>
+            <div class="card panel">
+              <div class="panel-head"><strong>Quick actions</strong></div>
+              <div class="panel-body" style="display: grid; gap: 9px">
+                <button class="btn" data-go="problems">Manage challenges</button
+                ><button class="btn" data-go="teams">Review teams</button
+                ><button class="btn" data-go="participants">
+                  Review participants</button
+                ><button class="btn" data-go="updates">Publish update</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="section-participants" class="admin-section">
+          <div class="card panel">
+            <div class="panel-head">
+              <strong>Participants</strong
+              ><button class="btn" id="export">Export CSV</button>
+            </div>
+            <div class="panel-body">
+              <div class="toolbar">
+                <input
+                  class="grow"
+                  id="participant-search"
+                  placeholder="Search name, email, ID, team or track"
+                /><select id="participant-status">
+                  <option value="ALL">All status</option>
+                  <option value="APPROVED">Approved</option>
+                  <option value="PENDING">Pending</option>
+                </select>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Participant</th>
+                      <th>Team</th>
+                      <th>Challenge</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="participants-table"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="section-teams" class="admin-section">
+          <div class="card panel">
+            <div class="panel-head">
+              <strong>Teams</strong
+              ><span class="muted" style="font-size: 11px"
+                >2–4 members recommended</span
+              >
+            </div>
+            <div class="panel-body">
+              <div class="toolbar">
+                <input
+                  class="grow"
+                  id="team-search"
+                  placeholder="Search team, code or leader"
+                />
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Team</th>
+                      <th>Code</th>
+                      <th>Members</th>
+                      <th>Track</th>
+                      <th>Problem</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teams-table"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="section-problems" class="admin-section">
+          <div class="card panel">
+            <div class="panel-head">
+              <strong>Problem statements</strong
+              ><button class="btn primary" id="new-problem">
+                New challenge
+              </button>
+            </div>
+            <div class="panel-body">
+              <div id="problem-admin-grid" class="grid grid-3"></div>
+            </div>
+          </div>
+        </section>
+        <section id="section-updates" class="admin-section">
+          <div class="card panel">
+            <div class="panel-head">
+              <strong>Announcements</strong
+              ><button class="btn primary" id="new-update">New update</button>
+            </div>
+            <div class="panel-body"><div id="updates-admin"></div></div>
+          </div>
+        </section>
+        <section id="section-support" class="admin-section">
+          <div class="card panel">
+            <div class="panel-head"><strong>Support tickets</strong></div>
+            <div class="panel-body"><div id="support-admin"></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="modal" class="modal">
+      <div class="modal-box">
+        <div class="modal-head">
+          <strong id="modal-title">Edit</strong
+          ><button class="close" type="button" data-admin-action="close-modal">
+            ×
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body"></div>
+        <div class="modal-foot">
+          <button class="btn" type="button" data-admin-action="close-modal">
+            Cancel</button
+          ><button class="btn primary" id="modal-save">Save</button>
+        </div>
+      </div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
