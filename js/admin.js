@@ -436,3 +436,50 @@ $("#export").onclick = async () => {
     toast(e.message);
   }
 };
+
+
+$("#export-teams").onclick = async () => {
+  const button = $("#export-teams");
+
+  try {
+    button.disabled = true;
+    button.textContent = "Exporting...";
+
+    const response = await fetch("/api/admin/teams/export-csv", {
+      headers: {
+        Authorization: "Bearer " + token(),
+      },
+    });
+
+    if (!response.ok) {
+      let message = "Unable to export teams.";
+
+      try {
+        const error = await response.json();
+        message = error.error || message;
+      } catch (_) {}
+
+      throw new Error(message);
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "nexxathon-teams.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast("Team CSV exported successfully.");
+  } catch (e) {
+    toast(e.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Export Teams CSV";
+  }
+};
